@@ -2,5 +2,9 @@
 	"comment": "",
 	"ignore": "test",
 	"package": [],
-	"rootPath": "github.com/heroku/projectible/backend"
+	"rootPath": "github.com/heroku/projectible/backend",
+	"heroku": {
+        "install" : [ "./..." ],
+        "goVersion": "go1.8.3"
+	}
 }
