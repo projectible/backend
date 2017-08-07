@@ -9,8 +9,7 @@ import (
 )
 
 func main() {
-	port := os.Getenv("PORT")
-
+	port := getenv("PORT", "5000")
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
@@ -25,4 +24,12 @@ func main() {
 	})
 
 	router.Run(":" + port)
+}
+
+func getenv(key, fallback string) string {
+    value := os.Getenv(key)
+    if len(value) == 0 {
+        return fallback
+    }
+    return value
 }
