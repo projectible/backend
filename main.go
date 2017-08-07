@@ -1,23 +1,28 @@
 package main
+
 import (
-    "fmt"
-    "github.com/julienschmidt/httprouter"
-    "net/http"
-    "log"
+	"log"
+	"net/http"
+	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
-func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-    fmt.Fprint(w, "Welcome!\n")
-}
-
-func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-    fmt.Fprintf(w, "hello, %s!\n", ps.ByName("name"))
-}
-
 func main() {
-    router := httprouter.New()
-    router.GET("/", Index)
-    router.GET("/hello/:name", Hello)
+	port := os.Getenv("PORT")
 
-    log.Fatal(http.ListenAndServe(":8080", router))
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
+	router := gin.New()
+	router.Use(gin.Logger())
+	router.LoadHTMLGlob("templates/*.tmpl.html")
+	router.Static("/static", "static")
+
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tmpl.html", nil)
+	})
+
+	router.Run(":" + port)
 }
