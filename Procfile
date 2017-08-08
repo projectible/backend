@@ -1,1 +1,1 @@
-web: projectible-backend
+web: backend
